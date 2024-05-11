@@ -1,4 +1,5 @@
 - 👋 Olá, sou @jarbasgoncal
 - 👀 Estou interessado em aprender e compartilhar conhecimento na area de desenvolvimento desktop.
-- 🌱 Atualmente estou aprendendo a linguagem Java e C#.
+- 📚 Atualmente estou aprendendo a linguagem e C# e JavaScript.
+- 💡 Tenho conhecimento em SQL, HTML e CSS.
 - 💞️ Estou disposto a colaborar em projetos novos e ajudar com o que eu puder.
