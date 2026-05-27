@@ -2,4 +2,4 @@
 - 👀 Estou interessado em aprender e compartilhar conhecimento na area de desenvolvimento desktop.
 - 📚 Atualmente estou aprendendo as linguagens e C# e Python.
 - 💡 Tenho conhecimento em SQL, HTML e CSS.
-- 💞️ Estou disposto a colaborar em projetos novos e ajudar com o que eu puder.
+- 🤝 Estou disposto a colaborar em projetos novos e ajudar com o que eu puder.
