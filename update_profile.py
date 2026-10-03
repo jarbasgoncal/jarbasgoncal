@@ -222,7 +222,9 @@ def info_lines(s):
 
 ef render(mode, stats):
     p = PALETTES[mode]
-    out = [
+    bg_col = p["bg"]
+    border_col = p["border"]
+    out = [    
         '<svg xmlns="http://www.w3.org/2000/svg" width="840" height="500" viewBox="0 0 840 500" '
         f'font-family="Consolas, Menlo, monospace" font-size="13px">',
         f'<rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
