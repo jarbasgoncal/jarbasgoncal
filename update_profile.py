@@ -6,6 +6,7 @@ import calendar
 import html
 import json
 import os
+import sys
 import urllib.request
 from datetime import date, datetime, timezone
 
@@ -70,8 +71,21 @@ ART = r"""
 %%%%#%%%%%%%%%%%%%%%%%%%%%%%%@%%%%%%%%%%%%%%%%%%%%%%%%#%%#%%%%%%%%%%%#%%%%%%%%%%
 """
 
-TOKEN = os.environ.get("GITHUB_TOKEN") or os.environ.get("ACCESS_TOKEN") or ""
+# ACCESS_TOKEN (PAT classic com `repo` + `read:user`) primeiro: conta
+# contribuições privadas. GITHUB_TOKEN serve de fallback para dados públicos.
+TOKEN = os.environ.get("ACCESS_TOKEN") or os.environ.get("GITHUB_TOKEN") or ""
 PRIV_TOKEN = os.environ.get("ACCESS_TOKEN") or TOKEN
+
+MOCK_STATS = {
+    "followers": 0,
+    "repos": 0,
+    "contributed": 0,
+    "stars": 0,
+    "commits": 0,
+    "loc_add": 0,
+    "loc_del": 0,
+    "loc": 0,
+}
 
 
 def gh(url, payload=None, token=None):
@@ -103,30 +117,42 @@ def age(b, t):
 
 
 def fetch_stats():
+    if not TOKEN:
+        print("warning: nenhum token (ACCESS_TOKEN/GITHUB_TOKEN) — usando zeros", file=sys.stderr)
+        return dict(MOCK_STATS)
     yr_aliases = "\n".join(
         f'y{y}: contributionsCollection(from: "{y}-01-01T00:00:00Z", to: "{y + 1}-01-01T00:00:00Z")'
         " { totalCommitContributions restrictedContributionsCount }"
         for y in range(JOINED_YEAR, datetime.now(timezone.utc).year + 1)
     )
-    contrib = graphql(f'query {{ user(login: "{USER}") {{ {yr_aliases} }} }}')["user"]
-    commits = sum(
-        v["totalCommitContributions"] + v["restrictedContributionsCount"]
-        for v in contrib.values()
-    )
-    u = graphql(f"""
-    query {{
-      user(login: "{USER}") {{
-        id
-        followers {{ totalCount }}
-        repositories(first: 100, ownerAffiliations: OWNER) {{
-          totalCount
-          nodes {{ name stargazerCount isFork }}
-        }}
-        repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, PULL_REQUEST, REPOSITORY]) {{
-          totalCount
-        }}
-      }}
-    }}""", token=PRIV_TOKEN)["user"]
+    try:
+        contrib = graphql(f'query {{ user(login: "{USER}") {{ {yr_aliases} }} }}')["user"]
+        commits = sum(
+            (v or {}).get("totalCommitContributions", 0) + (v or {}).get("restrictedContributionsCount", 0)
+            for v in contrib.values()
+        )
+    except Exception as e:
+        print(f"warning: commits falhou ({e}) — usando 0", file=sys.stderr)
+        commits = 0
+    try:
+        u = graphql(f"""
+        query {{
+          user(login: "{USER}") {{
+            id
+            followers {{ totalCount }}
+            repositories(first: 100, ownerAffiliations: OWNER) {{
+              totalCount
+              nodes {{ name stargazerCount isFork }}
+            }}
+            repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, PULL_REQUEST, REPOSITORY]) {{
+              totalCount
+            }}
+          }}
+        }}""", token=PRIV_TOKEN)["user"]
+    except Exception as e:
+        print(f"warning: repos/stars falhou ({e}) — usando zeros", file=sys.stderr)
+        return {"followers": 0, "repos": 0, "contributed": 0, "stars": 0,
+                "commits": commits, "loc_add": 0, "loc_del": 0, "loc": 0}
     stats = {
         "followers": u["followers"]["totalCount"],
         "repos": u["repositories"]["totalCount"],
@@ -134,7 +160,11 @@ def fetch_stats():
         "stars": sum(n["stargazerCount"] for n in u["repositories"]["nodes"]),
         "commits": commits,
     }
-    stats.update(loc([n["name"] for n in u["repositories"]["nodes"] if not n["isFork"]], u["id"]))
+    try:
+        stats.update(loc([n["name"] for n in u["repositories"]["nodes"] if not n["isFork"]], u["id"]))
+    except Exception as e:
+        print(f"warning: loc falhou ({e}) — usando 0", file=sys.stderr)
+        stats.update({"loc_add": 0, "loc_del": 0, "loc": 0})
     return stats
 
 
@@ -247,8 +277,12 @@ def selfcheck():
 
 if __name__ == "__main__":
     selfcheck()
-    stats = fetch_stats()
-    print("stats:", stats)
+    if "--mock" in sys.argv or "--offline" in sys.argv:
+        stats = dict(MOCK_STATS)
+        print("stats (mock):", stats)
+    else:
+        stats = fetch_stats()
+        print("stats:", stats)
     for mode in PALETTES:
         with open(f"{mode}_mode.svg", "w", encoding="utf-8") as f:
             f.write(render(mode, stats))
