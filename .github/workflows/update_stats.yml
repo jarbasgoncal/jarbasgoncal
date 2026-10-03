@@ -35,7 +35,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: svgs
-          path: "{dark,light}_mode.svg"
+          path: |
+            dark_mode.svg
+            light_mode.svg
           if-no-files-found: warn
 
       - name: Commit and push changes
