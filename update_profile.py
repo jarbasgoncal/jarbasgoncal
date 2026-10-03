@@ -220,7 +220,36 @@ def info_lines(s):
     ]
 
 
-def render(mode, stats):
-    p = PALETTES[mode]
-    out = [
-        '
+ef render(mode, stats):
+    p = PALETTES[mode]
+    out = [
+        '<svg xmlns="http://www.w3.org/2000/svg" width="840" height="500" viewBox="0 0 840 500" '
+        f'font-family="Consolas, Menlo, monospace" font-size="13px">',
+        f'<rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
+    ]
+    for i, line in enumerate(ART.strip("\n").split("\n")):
+        out.append(f'<text x="25" y="{40 + i * 15}" fill="{p["art"]}" xml:space="preserve">{html.escape(line)}</text>')
+    for i, segs in enumerate(info_lines(stats)):
+        if not segs:
+            continue
+        spans = "".join(f'<tspan fill="{p[c]}">{html.escape(t)}</tspan>' for t, c in segs)
+        out.append(f'<text x="390" y="{45 + i * 21}" xml:space="preserve">{spans}</text>')
+    out.append("</svg>")
+    return "\n".join(out)
+
+
+def selfcheck():
+    assert age(date(1989, 1, 15), date(2026, 7, 10)) == (37, 5, 25)
+    assert age(date(2000, 3, 31), date(2026, 4, 1)) == (26, 0, 1)
+    assert age(date(2000, 1, 1), date(2026, 1, 1)) == (26, 0, 0)
+    assert len("".join(t for t, _ in kv("OS", "Windows, macOS"))) == W
+
+
+if __name__ == "__main__":
+    selfcheck()
+    stats = fetch_stats()
+    print("stats:", stats)
+    for mode in PALETTES:
+        with open(f"{mode}_mode.svg", "w", encoding="utf-8") as f:
+            f.write(render(mode, stats))
+    print("wrote dark_mode.svg, light_mode.svg")
