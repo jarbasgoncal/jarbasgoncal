@@ -220,20 +220,32 @@ def info_lines(s):
     ]
 
 
+ART_FONT_SIZE = 9
+ART_LINE_H = 11
+ART_X = 20
+ART_Y0 = 35
+INFO_FONT_SIZE = 13
+INFO_LINE_H = 21
+INFO_X = 485
+INFO_Y0 = 45
+SVG_W = 960
+SVG_H = 650
+
+
 def render(mode, stats):
     p = PALETTES[mode]
     out = [
-        '<svg xmlns="http://www.w3.org/2000/svg" width="840" height="500" viewBox="0 0 840 500" '
-        f'font-family="Consolas, Menlo, monospace" font-size="13px">',
-        f'<rect x="0.5" y="0.5" width="839" height="499" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{SVG_W}" height="{SVG_H}" viewBox="0 0 {SVG_W} {SVG_H}" '
+        f'font-family="Consolas, Menlo, monospace" font-size="{INFO_FONT_SIZE}px">',
+        f'<rect x="0.5" y="0.5" width="{SVG_W - 1}" height="{SVG_H - 1}" rx="10" fill="{p["bg"]}" stroke="{p["border"]}"/>',
     ]
     for i, line in enumerate(ART.strip("\n").split("\n")):
-        out.append(f'<text x="25" y="{40 + i * 15}" fill="{p["art"]}" xml:space="preserve">{html.escape(line)}</text>')
+        out.append(f'<text x="{ART_X}" y="{ART_Y0 + i * ART_LINE_H}" fill="{p["art"]}" font-size="{ART_FONT_SIZE}px" xml:space="preserve">{html.escape(line)}</text>')
     for i, segs in enumerate(info_lines(stats)):
         if not segs:
             continue
         spans = "".join(f'<tspan fill="{p[c]}">{html.escape(t)}</tspan>' for t, c in segs)
-        out.append(f'<text x="390" y="{45 + i * 21}" xml:space="preserve">{spans}</text>')
+        out.append(f'<text x="{INFO_X}" y="{INFO_Y0 + i * INFO_LINE_H}" xml:space="preserve">{spans}</text>')
     out.append("</svg>")
     return "\n".join(out)
 
@@ -243,6 +255,12 @@ def selfcheck():
     assert age(date(2000, 3, 31), date(2026, 4, 1)) == (26, 0, 1)
     assert age(date(2000, 1, 1), date(2026, 1, 1)) == (26, 0, 0)
     assert len("".join(t for t, _ in kv("OS", "Windows, macOS"))) == W
+    art = ART.strip("\n").split("\n")
+    assert ART_Y0 + (len(art) - 1) * ART_LINE_H + 20 <= SVG_H, "arte corta embaixo"
+    # largura estimada: monospace ~0.6 * font-size por coluna
+    assert ART_X + max(len(l) for l in art) * ART_FONT_SIZE * 0.6 + 20 <= INFO_X, "arte sobrepoe info"
+    assert INFO_Y0 + (len(info_lines(MOCK_STATS)) - 1) * INFO_LINE_H + 25 <= SVG_H, "info corta embaixo"
+    assert INFO_X + W * INFO_FONT_SIZE * 0.6 + 20 <= SVG_W, "info corta à direita"
 
 
 if __name__ == "__main__":
