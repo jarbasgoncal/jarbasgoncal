@@ -259,7 +259,9 @@ def selfcheck():
     assert ART_Y0 + (len(art) - 1) * ART_LINE_H + 20 <= SVG_H, "arte corta embaixo"
     # largura estimada: monospace ~0.6 * font-size por coluna
     assert ART_X + max(len(l) for l in art) * ART_FONT_SIZE * 0.6 + 20 <= INFO_X, "arte sobrepoe info"
-    assert INFO_Y0 + (len(info_lines(MOCK_STATS)) - 1) * INFO_LINE_H + 25 <= SVG_H, "info corta embaixo"
+    assert INFO_Y0 + (len(info_lines({"repos": 0, "contributed": 0, "stars": 0, "commits": 0,
+                                         "followers": 0, "loc": 0, "loc_add": 0,
+                                         "loc_del": 0})) - 1) * INFO_LINE_H + 25 <= SVG_H, "info corta embaixo"
     assert INFO_X + W * INFO_FONT_SIZE * 0.6 + 20 <= SVG_W, "info corta à direita"
 
 
