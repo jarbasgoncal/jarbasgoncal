@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="650" viewBox="0 0 960 650" font-family="Consolas, Menlo, monospace" font-size="13px">
-<rect x="0.5" y="0.5" width="959" height="649" rx="10" fill="#0d1117" stroke="#30363d"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="650" viewBox="0 0 1040 650" font-family="Consolas, Menlo, monospace" font-size="13px">
+<rect x="0.5" y="0.5" width="1039" height="649" rx="10" fill="#0d1117" stroke="#30363d"/>
 <text x="20" y="35" fill="#8b949e" font-size="9px" xml:space="preserve">::::::::::::::::::::::::::::::-::.:::::::::::::::::::---------------------------</text>
 <text x="20" y="46" fill="#8b949e" font-size="9px" xml:space="preserve">:::::::::::::::::::::::::::::::::.:::::::::::::::::::---------------------------</text>
 <text x="20" y="57" fill="#8b949e" font-size="9px" xml:space="preserve">:::::::::::::::::::::::::::::::=::::-+++=--::::::::::::-------------------------</text>
@@ -58,13 +58,16 @@
 <text x="485" y="108" xml:space="preserve"><tspan fill="#ffa657">Uptime: </tspan><tspan fill="#484f58">.................... </tspan><tspan fill="#c9d1d9">37 years, 6 months, 26 days</tspan></text>
 <text x="485" y="129" xml:space="preserve"><tspan fill="#ffa657">Kernel: </tspan><tspan fill="#484f58">................... </tspan><tspan fill="#c9d1d9">Software Analyst &amp; Developer</tspan></text>
 <text x="485" y="150" xml:space="preserve"><tspan fill="#ffa657">IDE: </tspan><tspan fill="#484f58">........................................... </tspan><tspan fill="#c9d1d9">VS Code</tspan></text>
-<text x="485" y="192" xml:space="preserve"><tspan fill="#ffa657">Languages.Programming: </tspan><tspan fill="#484f58">.... </tspan><tspan fill="#c9d1d9">Python, JavaScript, SQL, PHP</tspan></text>
+<text x="485" y="192" xml:space="preserve"><tspan fill="#ffa657">Languages.Programming: </tspan><tspan fill="#484f58">. </tspan><tspan fill="#c9d1d9">PHP 73%, JavaScript 19%, SQL 5%, Python 1%</tspan></text>
 <text x="485" y="213" xml:space="preserve"><tspan fill="#ffa657">Hobbies: </tspan><tspan fill="#484f58">.................................. </tspan><tspan fill="#c9d1d9">Gaming, Tech</tspan></text>
 <text x="485" y="255" xml:space="preserve"><tspan fill="#58a6ff">─ Contact </tspan><tspan fill="#484f58">──────────────────────────────────────────────</tspan></text>
 <text x="485" y="276" xml:space="preserve"><tspan fill="#ffa657">Email: </tspan><tspan fill="#484f58">.......................... </tspan><tspan fill="#c9d1d9">jarbasgoncal@gmail.com</tspan></text>
 <text x="485" y="297" xml:space="preserve"><tspan fill="#ffa657">LinkedIn: </tspan><tspan fill="#484f58">.............................. </tspan><tspan fill="#c9d1d9">in/jarbasgoncal</tspan></text>
 <text x="485" y="339" xml:space="preserve"><tspan fill="#58a6ff">─ GitHub Stats </tspan><tspan fill="#484f58">─────────────────────────────────────────</tspan></text>
 <text x="485" y="360" xml:space="preserve"><tspan fill="#ffa657">Repos: </tspan><tspan fill="#484f58">.... </tspan><tspan fill="#c9d1d9">4 {Contributed: 1}</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">Stars: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">0</tspan></text>
-<text x="485" y="381" xml:space="preserve"><tspan fill="#ffa657">Commits: </tspan><tspan fill="#484f58">.................. </tspan><tspan fill="#c9d1d9">43</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">Followers: </tspan><tspan fill="#484f58">.......... </tspan><tspan fill="#c9d1d9">1</tspan></text>
-<text x="485" y="402" xml:space="preserve"><tspan fill="#ffa657">Lines of Code: </tspan><tspan fill="#c9d1d9">27,120</tspan><tspan fill="#484f58"> ( </tspan><tspan fill="#3fb950">28,117++</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">997--</tspan><tspan fill="#484f58"> )</tspan></text>
+<text x="485" y="381" xml:space="preserve"><tspan fill="#ffa657">Commits: </tspan><tspan fill="#484f58">.................. </tspan><tspan fill="#c9d1d9">44</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">Followers: </tspan><tspan fill="#484f58">.......... </tspan><tspan fill="#c9d1d9">1</tspan></text>
+<text x="485" y="402" xml:space="preserve"><tspan fill="#ffa657">PRs: </tspan><tspan fill="#484f58">....................... </tspan><tspan fill="#c9d1d9">0</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">Reviews: </tspan><tspan fill="#484f58">............ </tspan><tspan fill="#c9d1d9">0</tspan></text>
+<text x="485" y="423" xml:space="preserve"><tspan fill="#ffa657">Issues: </tspan><tspan fill="#484f58">.................... </tspan><tspan fill="#c9d1d9">0</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">Forks: </tspan><tspan fill="#484f58">.............. </tspan><tspan fill="#c9d1d9">0</tspan></text>
+<text x="485" y="444" xml:space="preserve"><tspan fill="#ffa657">Following: </tspan><tspan fill="#484f58">................. </tspan><tspan fill="#c9d1d9">1</tspan><tspan fill="#484f58"> | </tspan><tspan fill="#ffa657">Streak: </tspan><tspan fill="#484f58">. </tspan><tspan fill="#c9d1d9">1 day (max 3)</tspan></text>
+<text x="485" y="465" xml:space="preserve"><tspan fill="#ffa657">Lines of Code: </tspan><tspan fill="#c9d1d9">30,371</tspan><tspan fill="#484f58"> ( </tspan><tspan fill="#3fb950">33,348++</tspan><tspan fill="#484f58">, </tspan><tspan fill="#f85149">2,977--</tspan><tspan fill="#484f58"> )</tspan></text>
 </svg>
