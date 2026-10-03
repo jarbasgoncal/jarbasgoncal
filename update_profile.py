@@ -113,26 +113,56 @@ def age(b, t):
     return years, months, days
 
 
+def gh_rest(path, token=None):
+    """GET on the REST API, returns parsed JSON."""
+    req = urllib.request.Request(
+        f"https://api.github.com{path}",
+        headers={"Authorization": f"Bearer {token or TOKEN}", "Accept": "application/vnd.github+json"},
+    )
+    with urllib.request.urlopen(req) as r:
+        return json.loads(r.read() or "{}")
+
+
+def search_total(payload):
+    try:
+        return int((payload or {}).get("total_count", 0))
+    except (TypeError, ValueError):
+        return 0
+
+
+def collab_stats():
+    """PRs authored / PRs reviewed / issues authored via Search API.
+
+    contributionsCollection silently drops private-org contributions
+    (e.g. clarus-comercial/sonic), while search sees them with the
+    same token. Returns (prs, reviews, issues).
+    """
+    try:
+        prs = search_total(gh_rest(f"/search/issues?q=author:{USER}+type:pr&per_page=1", PRIV_TOKEN))
+        reviews = search_total(gh_rest(f"/search/issues?q=reviewed-by:{USER}+type:pr&per_page=1", PRIV_TOKEN))
+        issues = search_total(gh_rest(f"/search/issues?q=author:{USER}+type:issue&per_page=1", PRIV_TOKEN))
+        return prs, reviews, issues
+    except Exception as e:
+        print(f"warning: search prs/reviews/issues falhou ({e}) — usando zeros")
+        return 0, 0, 0
+
+
 def fetch_stats():
     yr_aliases = "\n".join(
         f'y{y}: contributionsCollection(from: "{y}-01-01T00:00:00Z", to: "{y + 1}-01-01T00:00:00Z")'
-        " { totalCommitContributions restrictedContributionsCount"
-        " totalPullRequestContributions totalPullRequestReviewContributions"
-        " totalIssueContributions }"
+        " { totalCommitContributions restrictedContributionsCount }"
         for y in range(JOINED_YEAR, datetime.now(timezone.utc).year + 1)
     )
     try:
         contrib = graphql(f'query {{ user(login: "{USER}") {{ {yr_aliases} }} }}')["user"]
-        commits = prs = reviews = issues = 0
+        commits = 0
         for v in contrib.values():
             v = v or {}
             commits += v.get("totalCommitContributions", 0) + v.get("restrictedContributionsCount", 0)
-            prs += v.get("totalPullRequestContributions", 0)
-            reviews += v.get("totalPullRequestReviewContributions", 0)
-            issues += v.get("totalIssueContributions", 0)
     except Exception as e:
         print(f"warning: contributions falhou ({e}) — usando zeros")
-        commits = prs = reviews = issues = 0
+        commits = 0
+    prs, reviews, issues = collab_stats()
     try:
         u = graphql(f"""
         query {{
@@ -403,6 +433,8 @@ def selfcheck():
     got = top_languages(fx_owned, fx_contrib)
     assert got.startswith("PHP") and "JavaScript" in got and "SQL" in got, got
     assert "Twig" not in got and "CSS" not in got and "PLSQL" not in got, got
+    assert search_total({"total_count": 150, "incomplete_results": False}) == 150
+    assert search_total({}) == 0 and search_total(None) == 0
 
 
 if __name__ == "__main__":
